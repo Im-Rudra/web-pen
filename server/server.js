@@ -6,7 +6,7 @@ const schema = require('./graphql/schema/schema');
 const app = express();
 require('dotenv').config();
 
-const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ve3u0.mongodb.net/testDB?retryWrites=true&w=majority`;
+const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ve3u0.mongodb.net/${process.env.DB}?retryWrites=true&w=majority`;
 
 const port = process.env.PORT || 5000;
 
@@ -29,5 +29,5 @@ app.listen(port, () => {
 });
 
 app.get('/', (req, res) => {
-  res.send(`<h2>Server is running at port: ${port}`);
+  res.send(`<h2>Server is running at port: ${port}<h2/>`);
 });

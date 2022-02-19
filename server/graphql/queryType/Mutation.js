@@ -41,10 +41,10 @@ const Mutation = new GraphQLObjectType({
         phone: { type: GraphQLString }
       },
       resolve(parent, { id, email, ...rest }) {
-        const queryDoc = {
+        const filter = {
           $or: [{ _id: id }, { email }]
         };
-        return User.updateOne(queryDoc, rest);
+        return User.updateOne(filter, rest);
       }
     },
     deleteUser: {
@@ -54,10 +54,10 @@ const Mutation = new GraphQLObjectType({
         email: { type: GraphQLString }
       },
       resolve(parent, { id, email }) {
-        const queryDoc = {
+        const filter = {
           $or: [{ _id: id }, { email }]
         };
-        return User.deleteOne(queryDoc);
+        return User.deleteOne(filter);
       }
     },
     addBlog: {
@@ -85,10 +85,10 @@ const Mutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         const { id, slug, ...rest } = args;
-        const queryDoc = {
+        const filter = {
           $or: [{ _id: id }, { slug }]
         };
-        return Blog.updateOne(queryDoc, rest);
+        return Blog.updateOne(filter, rest);
       }
     },
     deleteBlog: {
@@ -98,10 +98,10 @@ const Mutation = new GraphQLObjectType({
         slug: { type: GraphQLString }
       },
       resolve(parent, { id, slug }) {
-        const queryDoc = {
+        const filter = {
           $or: [{ _id: id }, { slug }]
         };
-        return Blog.deleteOne(queryDoc);
+        return Blog.deleteOne(filter);
       }
     },
     addCategory: {
@@ -114,6 +114,33 @@ const Mutation = new GraphQLObjectType({
         const slug = slugMaker(args.categoryName);
         const category = new Category({ slug, ...args });
         return category.save();
+      }
+    },
+    editCategory: {
+      type: CategoryType,
+      args: {
+        id: { type: GraphQLID },
+        slug: { type: GraphQLString },
+        description: { type: GraphQLString }
+      },
+      resolve(parent, { id, slug, ...rest }) {
+        const filter = {
+          $or: [{ _id: id }, { slug }]
+        };
+        return Category.updateOne(filter, rest);
+      }
+    },
+    deleteCategory: {
+      type: CategoryType,
+      args: {
+        id: { type: GraphQLID },
+        slug: { type: GraphQLString }
+      },
+      resolve(parent, { id, slug }) {
+        const filter = {
+          $or: [{ _id: id }, { slug }]
+        };
+        return Category.deleteOne(filter);
       }
     }
   }
